@@ -1,0 +1,8 @@
+{
+  "name": "domestic-product-analyzer-functions",
+  "version": "1.0.0",
+  "description": "Dependencies for Cloudflare Pages Functions",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12"
+  }
+}

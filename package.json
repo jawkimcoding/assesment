@@ -4,7 +4,8 @@
   "description": "국산 농축산물 적격성 및 국산 여부 판독기",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "echo 'No build step required'"
   },
   "dependencies": {
     "express": "^4.19.2",

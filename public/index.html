@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>국산 농축산물 판독기 - 적격성 심사 시스템</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons (CDN) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="background-decorations">
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+    <div class="circle circle-3"></div>
+  </div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <i data-lucide="shield-check" class="logo-icon"></i>
+        <span class="logo-text">ANTIGRAVITY</span>
+      </div>
+      <div class="header-title-wrapper">
+        <h1>국산 농축산물 적격성 판독기</h1>
+        <p class="subtitle">상품 링크 또는 상세 텍스트를 분석하여 지원 사업 적격성 여부를 판정합니다.</p>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="app-main">
+      
+      <!-- Input Section (Card) -->
+      <section class="card glass-card input-section" id="input-section">
+        <div class="tab-buttons">
+          <button class="tab-btn active" data-tab="url-tab">
+            <i data-lucide="link"></i> 상품 링크 판독
+          </button>
+          <button class="tab-btn" data-tab="manual-tab">
+            <i data-lucide="file-text"></i> 상세 내용 직접 입력
+          </button>
+        </div>
+
+        <div class="tab-content" id="url-tab-content">
+          <div class="form-group">
+            <label for="product-url">상품 판매 URL 주소</label>
+            <div class="url-input-wrapper">
+              <i data-lucide="globe" class="input-icon"></i>
+              <input type="url" id="product-url" placeholder="https://smartstore.naver.com/..." autocomplete="off">
+            </div>
+            <p class="form-tip">스마트스토어, 쿠팡, 컬리 등 주요 쇼핑몰 상품 페이지 링크를 입력해주세요.</p>
+          </div>
+        </div>
+
+        <div class="tab-content hidden" id="manual-tab-content">
+          <div class="form-group">
+            <label for="product-text">상품 상세 내용 또는 원재료 설명</label>
+            <textarea id="product-text" placeholder="상품 상세페이지 설명글이나 원재료 함량 설명 텍스트를 그대로 복사하여 붙여넣으세요."></textarea>
+          </div>
+        </div>
+
+        <div class="action-area">
+          <button type="button" class="btn btn-primary btn-large" id="btn-submit">
+            <span>판독 시작하기</span>
+            <i data-lucide="play" class="btn-icon"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- Loading Section -->
+      <section class="card glass-card loading-section hidden" id="loading-section">
+        <div class="loader-wrapper">
+          <div class="radar-loader">
+            <div class="ripple"></div>
+            <div class="ripple"></div>
+            <div class="ripple"></div>
+            <i data-lucide="search" class="loader-center-icon"></i>
+          </div>
+          <h3 id="loading-title">분석을 준비하고 있습니다...</h3>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress-fill"></div>
+          </div>
+          
+          <div class="loading-steps">
+            <div class="step-item active" id="step-1">
+              <i data-lucide="circle-dot" class="step-icon"></i>
+              <span>URL 연결 중</span>
+            </div>
+            <div class="step-item" id="step-2">
+              <i data-lucide="circle" class="step-icon"></i>
+              <span>상품 데이터 추출 중</span>
+            </div>
+            <div class="step-item" id="step-3">
+              <i data-lucide="circle" class="step-icon"></i>
+              <span>심사 기준 규칙 매칭 중</span>
+            </div>
+            <div class="step-item" id="step-4">
+              <i data-lucide="circle" class="step-icon"></i>
+              <span>분석 보고서 작성 중</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Result Section (Dashboard) -->
+      <section class="result-section hidden" id="result-section">
+        
+        <!-- Top Summary Bar -->
+        <div class="result-summary-bar">
+          <div class="product-info-badge">
+            <i data-lucide="shopping-bag"></i>
+            <span id="result-product-title">상주 곶감 1kg 선물세트</span>
+          </div>
+          <button class="btn btn-secondary" id="btn-retry">
+            <i data-lucide="rotate-ccw"></i> 다시 판독하기
+          </button>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+          
+          <!-- Column Left: Overall Judgment & Scores -->
+          <div class="dashboard-col col-left">
+            
+            <!-- Overall Result Card -->
+            <div class="card glass-card result-status-card" id="status-card">
+              <div class="status-badge-wrapper">
+                <span class="status-badge" id="status-badge-val">PASS</span>
+              </div>
+              <h2 class="status-title" id="status-title-val">심사 적격</h2>
+              <p class="status-summary" id="status-summary-val">해당 상품은 국내산 원재료 사용 및 직접 생산 기준에 부합하여 지원 사업 참여가 가능합니다.</p>
+            </div>
+
+            <!-- Scores Card -->
+            <div class="card glass-card scores-card">
+              <h3>판독 세부 점수</h3>
+              <div class="score-meters">
+                
+                <!-- Meter 1 -->
+                <div class="score-meter-item">
+                  <div class="meter-info">
+                    <span>원산지 적격성</span>
+                    <span class="meter-val" id="score-origin-val">90점</span>
+                  </div>
+                  <div class="meter-bar">
+                    <div class="meter-fill color-origin" id="score-origin-bar" style="width: 90%;"></div>
+                  </div>
+                </div>
+
+                <!-- Meter 2 -->
+                <div class="score-meter-item">
+                  <div class="meter-info">
+                    <span>직접 생산 및 가공도</span>
+                    <span class="meter-val" id="score-production-val">80점</span>
+                  </div>
+                  <div class="meter-bar">
+                    <div class="meter-fill color-production" id="score-production-bar" style="width: 80%;"></div>
+                  </div>
+                </div>
+
+                <!-- Meter 3 -->
+                <div class="score-meter-item">
+                  <div class="meter-info">
+                    <span>인증 및 신뢰도</span>
+                    <span class="meter-val" id="score-credibility-val">75점</span>
+                  </div>
+                  <div class="meter-bar">
+                    <div class="meter-fill color-credibility" id="score-credibility-bar" style="width: 75%;"></div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Recommended Documents Card -->
+            <div class="card glass-card docs-card">
+              <h3>추천 제출 증빙 서류</h3>
+              <p class="card-subtitle">지원 사업 적격성 최종 검증을 위해 아래 서류 제출을 권장합니다.</p>
+              <ul class="doc-checklist" id="doc-checklist-val">
+                <!-- Dynamically populated -->
+              </ul>
+            </div>
+
+          </div>
+
+          <!-- Column Right: Criteria Details & Evidence -->
+          <div class="dashboard-col col-right">
+            
+            <!-- Criteria Checks -->
+            <div class="card glass-card criteria-checks-card">
+              <h3>심사 기준별 판정 상세</h3>
+              <div class="criteria-list" id="criteria-list-val">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+            <!-- Text Evidence -->
+            <div class="card glass-card evidence-card">
+              <h3>탐지된 주요 근거 문장</h3>
+              <p class="card-subtitle">상세페이지에서 적격/우려 요소의 판정 근거가 된 핵심 문맥입니다.</p>
+              <div class="evidence-list" id="evidence-list-val">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Criteria Accordion -->
+      <section class="card glass-card info-accordion-section">
+        <div class="accordion-header" id="accordion-toggle">
+          <h3>
+            <i data-lucide="info" class="header-icon"></i>
+            <span>상품 선정 및 적격성 심사 기준 (안) 요약 보기</span>
+          </h3>
+          <i data-lucide="chevron-down" class="arrow-icon"></i>
+        </div>
+        <div class="accordion-content hidden" id="accordion-content">
+          <div class="content-inner">
+            <div class="rule-block">
+              <h4>제2조 (기본 원칙: 직접 생산 및 가공 참여)</h4>
+              <p>본 사업의 지원 대상은 '직접 생산 단계(생산·재배·가공·제조 등)'에 주도적으로 참여하는 경영체 및 업체로 제한하며, 단순 유통 및 대리 판매(벤더) 업체는 지원 대상에서 제외합니다.</p>
+            </div>
+            <div class="rule-block">
+              <h4>제3조 (경영체 미등록 품목의 예외적 인정 기준)</h4>
+              <ul>
+                <li><strong>온라인 판매 페이지 입증</strong>: 판매 URL 확인을 통해 생산/제조 직접 참여가 확인될 경우</li>
+                <li><strong>공인 인증서 기반 입증</strong>: 친환경, 무농약 인증서 등 국가 공인 인증 서류 제출</li>
+                <li><strong>생산자 단체 및 조합 기준</strong>: 영농조합법인, 농업회사법인, 조합 등 소속 조합원/농가의 농업경영체 등록 입증</li>
+                <li><strong>식품가공 및 제조 전문 업체 기준</strong>: 국내산 원물을 매입하여 직접 가공·제조(예: 국내산 축산물 양념육 가공, 국내산 레몬으로 레몬청 직접 제조)</li>
+                <li><strong>계약재배 및 생산 투자 기준</strong>: 농가와의 계약재배, 생산 자금 투자 등을 통해 생산에 직접 지분/리스크 부담 확인</li>
+              </ul>
+            </div>
+            <div class="rule-block">
+              <h4>※ [축산물 품목에 대한 특이사항]</h4>
+              <p>축산물 매입 후 직접 가공·포장하여 부가가치를 창출하는 2차 가공업체 역시 '직접 생산 및 가공' 범주로 예외 인정하여 판로를 지원합니다.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>© 2026 Antigravity 심사 적격성 분석 시스템. All Rights Reserved.</p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
